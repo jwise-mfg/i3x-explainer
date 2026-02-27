@@ -351,8 +351,8 @@
       /* spec-tags are opacity:0 by default (not display:none), so they still
          consume vertical space inside the fixed-height node and cause overflow.
          Switch to display:none until .show is applied. */
-      .spec-tags          { display:none; }
-      .spec-tags.show     { display:flex; }
+      .spec-tags,
+      .spec-tags.show     { display:none; }
 
       /* Clip anything that still overflows (e.g. very long tag lists) */
       .backend-node       { overflow:hidden; padding:1vh 1.2vw 0.8vh; }
