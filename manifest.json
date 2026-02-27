@@ -1,0 +1,28 @@
+{
+  "name": "i3X API — How It Works",
+  "short_name": "i3X Viz",
+  "description": "See how the i3X open API standard connects industrial data sources to a unified set of API methods.",
+  "start_url": "/viz/",
+  "scope": "/viz/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#080b12",
+  "theme_color": "#00c40a",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "i3XHero.png",
+      "sizes": "1406x881",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "i3X API explainer visualization"
+    }
+  ]
+}

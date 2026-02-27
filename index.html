@@ -6,6 +6,13 @@
   <title>i3X API — How It Works</title>
   <meta name="description" content="See how the i3X open API standard connects industrial data sources to a unified set of methods — explore, query, history, subscribe, and update.">
   <link rel="canonical" href="https://www.i3x.dev/viz/">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#00c40a">
+
+  <!-- Apple PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="i3X Viz">
 
   <!-- OpenGraph -->
   <meta property="og:type"        content="website">
@@ -1274,6 +1281,11 @@ window.addEventListener('resize', () => {
 buildSVG();
 buildRouteHighlights();
 buildDots();
+
+// Register service worker for PWA installability
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
 </script>
 </body>
 </html>
