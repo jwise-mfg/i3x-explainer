@@ -1,6 +1,6 @@
 {
-  "name": "i3X API — How It Works",
-  "short_name": "i3X Viz",
+  "name": "i3X Explained",
+  "short_name": "i3X",
   "description": "See how the i3X open API standard connects industrial data sources to a unified set of API methods.",
   "start_url": "/viz/",
   "scope": "/viz/",
