@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>I3X API — How It Works</title>
-  <meta name="description" content="See how the I3X open API standard connects industrial data sources to a unified set of methods — explore, query, history, subscribe, and update.">
+  <title>i3X API — How It Works</title>
+  <meta name="description" content="See how the i3X open API standard connects industrial data sources to a unified set of methods — explore, query, history, subscribe, and update.">
   <link rel="canonical" href="https://www.i3x.dev/viz/">
 
   <!-- OpenGraph -->
   <meta property="og:type"        content="website">
   <meta property="og:url"         content="https://www.i3x.dev/viz/">
-  <meta property="og:title"       content="I3X API — How It Works">
-  <meta property="og:description" content="See how the I3X open API standard connects industrial data sources to a unified set of methods — explore, query, history, subscribe, and update.">
+  <meta property="og:title"       content="i3X API — How It Works">
+  <meta property="og:description" content="See how the i3X open API standard connects industrial data sources to a unified set of methods — explore, query, history, subscribe, and update.">
   <meta property="og:image"       content="https://www.i3x.dev/images/i3XHero.png">
   <meta property="og:image:width"  content="1280">
   <meta property="og:image:height" content="736">
@@ -19,8 +19,8 @@
 
   <!-- Twitter/X -->
   <meta name="twitter:card"        content="summary_large_image">
-  <meta name="twitter:title"       content="I3X API — How It Works">
-  <meta name="twitter:description" content="See how the I3X open API standard connects industrial data sources to a unified set of methods — explore, query, history, subscribe, and update.">
+  <meta name="twitter:title"       content="i3X API — How It Works">
+  <meta name="twitter:description" content="See how the i3X open API standard connects industrial data sources to a unified set of methods — explore, query, history, subscribe, and update.">
   <meta name="twitter:image"       content="https://www.i3x.dev/images/i3XHero.png">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><radialGradient id='g' cx='38%' cy='32%' r='68%'><stop offset='0%' stop-color='%2344ff88'/><stop offset='45%' stop-color='%2300c40a'/><stop offset='100%' stop-color='%2302bbee'/></radialGradient></defs><circle cx='16' cy='16' r='16' fill='%23080b12'/><circle cx='16' cy='16' r='13' fill='url(%23g)'/></svg>">
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Lato:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
@@ -421,7 +421,7 @@
 
 <div id="app">
   <div id="header">
-    <h1>I3X API</h1>
+    <h1>i3X API</h1>
     <p>Industrial Information Interface eXchange</p>
   </div>
 
@@ -495,9 +495,9 @@
     <div id="orb-ripple"></div>
     <img id="orb-img"
          src="https://raw.githubusercontent.com/ace-technologies-inc/i3X-Explorer/refs/heads/main/build/icon-1024.png"
-         alt="I3X Orb">
+         alt="i3X Orb">
     <div id="orb-label">
-      <h2>I3X</h2>
+      <h2>i3X</h2>
       <p>Open API Standard</p>
     </div>
   </div>
@@ -529,7 +529,7 @@
   <!-- ── Compose Callout (positive) ── -->
   <div id="compose-callout">
     <h4>✓ Composable by Design</h4>
-    <p>Specialized sources combine through I3X to deliver complete, unified coverage</p>
+    <p>Specialized sources combine through i3X to deliver complete, unified coverage</p>
   </div>
 
   <div id="step-caption"></div>
@@ -555,7 +555,7 @@
 
 <script>
 // ════════════════════════════════════════════════════════
-//  I3X — Data flows LEFT→RIGHT: Sources → API → Methods
+//  i3X — Data flows LEFT→RIGHT: Sources → API → Methods
 // ════════════════════════════════════════════════════════
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -753,8 +753,8 @@ function buildRouteHighlights() {
 
 const CAPTIONS = [
   '',
-  'A variety of data sources can implement the I3X interface',
-  'I3X exposes a unified set of API methods to any client',
+  'A variety of data sources can implement the i3X interface',
+  'i3X exposes a unified set of API methods to any client',
   'MQTT delivers Subscribe & Update — other methods need additional sources',
   'Add a historian and History unlocks too',
   'Each new source unlocks more of the API',
@@ -1014,7 +1014,7 @@ const STEPS = [
       document.getElementById('compose-callout').querySelector('h4').textContent =
         '✓ In development now!';
       document.getElementById('compose-callout').querySelector('p').textContent =
-        'Leading industrial platforms are implementing I3X — compose your own systems';
+        'Leading industrial platforms are implementing i3X — compose your own systems';
       document.getElementById('compose-callout').classList.add('show');
       setTimeout(fireRipple, 600);
       pulseInterval = setInterval(fireRipple, 15000);
