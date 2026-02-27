@@ -250,7 +250,7 @@
       background:rgba(0,196,10,0.07);
       border:1px solid rgba(0,196,10,0.30);
       border-radius:1vw; padding:1.2vh 2.5vw;
-      text-align:center; white-space:nowrap;
+      text-align:center; white-space:normal; max-width:90vw;
       opacity:0; transition:opacity 0.8s ease;
     }
     #compose-callout.show { opacity:1; }
@@ -267,7 +267,7 @@
       position:absolute; bottom:8vh; left:50%; transform:translateX(-50%);
       font-family:'Josefin Sans',sans-serif;
       font-size:1.1vw; letter-spacing:0.2vw; text-transform:uppercase;
-      color:rgba(255,255,255,0.4); white-space:nowrap;
+      color:rgba(255,255,255,0.4); white-space:normal; text-align:center; max-width:80vw;
       opacity:0; transition:opacity 0.5s ease;
     }
     #step-caption.show { opacity:1; }
@@ -314,6 +314,57 @@
     }
     @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
     @keyframes hintPulse { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
+
+    /* ── Portrait / Rotate Prompt ── */
+    #rotate-prompt {
+      display:none;
+      position:fixed; inset:0; z-index:9999;
+      background:var(--bg);
+      flex-direction:column; align-items:center; justify-content:center;
+      gap:4vh; text-align:center; padding:0 8vw;
+    }
+    @media (orientation:portrait) { #rotate-prompt { display:flex; } }
+    #rotate-phone-svg {
+      width:min(20vw,72px); height:auto;
+      color:var(--cyan);
+      filter:drop-shadow(0 0 10px var(--cyan-glow));
+      animation:rotateHint 2.2s ease-in-out infinite;
+    }
+    @keyframes rotateHint {
+      0%,25%  { transform:rotate(0deg);  }
+      55%,80% { transform:rotate(90deg); }
+      100%    { transform:rotate(0deg);  }
+    }
+    #rotate-title {
+      font-family:'Josefin Sans',sans-serif;
+      font-size:min(7vw,28px); font-weight:700;
+      letter-spacing:0.3vw; text-transform:uppercase;
+      color:var(--cyan);
+    }
+    #rotate-sub { font-size:min(4.5vw,16px); color:var(--text-dim); max-width:70vw; }
+
+    /* ── Mobile landscape: minimum readable font sizes ── */
+    @media (max-width:1024px) {
+      #header h1          { font-size:max(3.6vw,18px); }
+      #header p           { font-size:max(1vw,10px); }
+      .col-label          { font-size:max(0.8vw,9px); }
+      .backend-icon       { width:max(4vw,24px); height:max(4vw,24px);
+                            min-width:max(4vw,24px); font-size:max(2vw,13px); }
+      .backend-text h3    { font-size:max(1.5vw,12px); }
+      .backend-text p     { font-size:max(0.85vw,9px); }
+      .spec-tag           { font-size:max(0.65vw,7px); padding:1px max(0.5vw,4px); }
+      .method-icon        { width:max(4vw,24px); height:max(4vw,24px);
+                            min-width:max(4vw,24px); font-size:max(2vw,13px); }
+      .method-text h3     { font-size:max(1.5vw,12px); }
+      .method-text p      { font-size:max(0.85vw,9px); }
+      #orb-label h2       { font-size:max(2vw,15px); }
+      #orb-label p        { font-size:max(0.7vw,8px); }
+      #compose-callout h4 { font-size:max(0.9vw,11px); }
+      #compose-callout p  { font-size:max(0.7vw,9px); }
+      #step-caption       { font-size:max(1.1vw,10px); }
+      #step-hint          { font-size:max(0.6vw,9px); }
+      .step-dot           { width:max(0.45vw,5px); height:max(0.45vw,5px); }
+    }
   </style>
 </head>
 <body>
@@ -454,6 +505,19 @@
     <div class="step-dots" id="step-dots"></div>
     <div id="step-hint">Space · Click · Arrow Keys</div>
   </div>
+</div>
+
+<!-- ── Rotate Prompt (shown only in portrait via CSS) ── -->
+<div id="rotate-prompt">
+  <svg id="rotate-phone-svg" viewBox="0 0 40 70" fill="none"
+       xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect x="3" y="2" width="34" height="66" rx="6" ry="6"
+          stroke="currentColor" stroke-width="3"/>
+    <circle cx="20" cy="57" r="3.5" fill="currentColor"/>
+    <rect x="13" y="9" width="14" height="3" rx="1.5" fill="currentColor" opacity="0.5"/>
+  </svg>
+  <p id="rotate-title">Rotate your device</p>
+  <p id="rotate-sub">This visualization works best in landscape mode</p>
 </div>
 
 <script>
@@ -665,7 +729,7 @@ const CAPTIONS = [
 ];
 
 // Step 6: proprietary product definitions
-const IMG = s => `<img src="${s}" style="width:2.6vw;height:2.6vw;object-fit:contain;border-radius:0.3vw;">`;
+const IMG = s => `<img src="${s}" style="width:max(2.6vw,18px);height:max(2.6vw,18px);object-fit:contain;border-radius:0.3vw;">`;
 
 const PRODUCTS = [
   {
@@ -1116,7 +1180,63 @@ document.addEventListener('keydown', e => {
   if (e.code === 'Space' || e.code === 'ArrowRight') { e.preventDefault(); advance(); }
   if (e.code === 'ArrowLeft') { e.preventDefault(); retreat(); }
 });
-document.addEventListener('click', () => advance());
+
+// Touch: swipe left=advance, swipe right=retreat, tap=advance
+let _tx = 0, _ty = 0, _lastTouch = 0;
+document.addEventListener('touchstart', e => {
+  _tx = e.touches[0].clientX;
+  _ty = e.touches[0].clientY;
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  _lastTouch = Date.now();
+  const dx = e.changedTouches[0].clientX - _tx;
+  const dy = e.changedTouches[0].clientY - _ty;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+    dx < 0 ? advance() : retreat();  // horizontal swipe
+  } else {
+    advance();  // tap
+  }
+  e.preventDefault();  // suppress synthetic click
+}, { passive: false });
+
+// Click (mouse/trackpad); ignore if a touch event just fired
+document.addEventListener('click', () => {
+  if (Date.now() - _lastTouch < 500) return;
+  advance();
+});
+
+// ── Rebuild SVG on resize / orientation change ────────────
+// Saves the current opacity state of every group, rebuilds all paths
+// for the new viewport dimensions, then restores state instantly
+// (no transition) so the lines snap to their correct positions.
+function rebuildSVG() {
+  const snap = obj => { const s = {}; Object.keys(obj).forEach(k => s[k] = obj[k].style.opacity); return s; };
+  const bS = snap(backendGroups), mS = snap(methodGroups), rS = snap(routeGroups);
+
+  buildSVG();
+  buildRouteHighlights();
+
+  // Disable transitions so the restore is instant (no fade-from-zero)
+  [...Object.values(backendGroups), ...Object.values(methodGroups), ...Object.values(routeGroups)]
+    .forEach(g => g.style.transition = 'none');
+
+  Object.keys(backendGroups).forEach(k => backendGroups[k].style.opacity = bS[k] || '0');
+  Object.keys(methodGroups).forEach(k =>  methodGroups[k].style.opacity  = mS[k] || '0');
+  Object.keys(routeGroups).forEach(k =>   routeGroups[k].style.opacity   = rS[k] || '0');
+
+  // Re-enable transitions after the browser has committed the snap
+  requestAnimationFrame(() => {
+    Object.values(backendGroups).forEach(g => g.style.transition = 'opacity 1s ease');
+    Object.values(methodGroups).forEach(g =>  g.style.transition = 'opacity 1s ease');
+    Object.values(routeGroups).forEach(g =>   g.style.transition = 'opacity 0.7s ease');
+  });
+}
+
+let _resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(rebuildSVG, 150);
+});
 
 buildSVG();
 buildRouteHighlights();
