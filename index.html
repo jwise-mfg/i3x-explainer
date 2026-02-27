@@ -343,11 +343,26 @@
     }
     #rotate-sub { font-size:min(4.5vw,16px); color:var(--text-dim); max-width:70vw; }
 
-    /* ── Mobile landscape: minimum readable font sizes ── */
+    /* ── Mobile landscape: layout & minimum readable font sizes ── */
     @media (max-width:1024px) {
+      /* Column labels overlap the first node on small screens — hide them */
+      .col-label          { display:none; }
+
+      /* spec-tags are opacity:0 by default (not display:none), so they still
+         consume vertical space inside the fixed-height node and cause overflow.
+         Switch to display:none until .show is applied. */
+      .spec-tags          { display:none; }
+      .spec-tags.show     { display:flex; }
+
+      /* Clip anything that still overflows (e.g. very long tag lists) */
+      .backend-node       { overflow:hidden; padding:1vh 1.2vw 0.8vh; }
+      .method-node        { overflow:hidden; }
+
+      /* Tighten the gap between icon and text so the main row fits */
+      .backend-main       { gap:0.6vw; }
+
       #header h1          { font-size:max(3.6vw,18px); }
       #header p           { font-size:max(1vw,10px); }
-      .col-label          { font-size:max(0.8vw,9px); }
       .backend-icon       { width:max(4vw,24px); height:max(4vw,24px);
                             min-width:max(4vw,24px); font-size:max(2vw,13px); }
       .backend-text h3    { font-size:max(1.5vw,12px); }
