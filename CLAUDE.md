@@ -107,7 +107,18 @@ favicon-postgres.ico   → PostgreSQL (b-custom in step 6)
 favicon-cesmii.png     → CESMII Profiles (b-opcua in step 5)
 favicon-litmus.ico     → Streaming Adapter (b-custom in step 5)
 ```
-All rendered via `IMG(src)` helper → `<img style="width:2.6vw;height:2.6vw;object-fit:contain">`.
+All rendered via `IMG(src)` helper → `<img style="width:max(2.6vw,18px);height:max(2.6vw,18px);object-fit:contain">`.
+
+## Mobile Support
+- **Portrait**: `#rotate-prompt` overlay shown via `@media (orientation:portrait)` — animated SVG phone icon, hidden in landscape
+- **Touch nav**: `touchend` handler — swipe left=advance, swipe right=retreat, tap=advance; `e.preventDefault()` suppresses synthetic click; click handler guards with 500ms timestamp
+- **SVG resize**: `rebuildSVG()` snapshots group opacities, tears down and rebuilds all SVG paths for new viewport, restores state with `transition:none` then re-enables via `requestAnimationFrame`. Called on `window resize` with 150ms debounce.
+- **Font minimums**: `@media (max-width:1024px)` block uses `max(Xvw, Ypx)` on all text so nothing shrinks below readable size on phone landscape
+
+## Deployment
+- This repo (`jwise-mfg/i3x-explainer`) is a **git submodule** inside `cesmii/i3x-dev-site` at path `viz/`
+- After pushing here, bump the parent repo: `git submodule update --remote viz && git add viz && git commit && git push`
+- Server update: `git pull --recurse-submodules` (or `git pull` + `git submodule update --init --recursive`)
 
 ## Key JS Objects / Functions
 - `backendGroups` / `methodGroups` — SVG `<g>` elements for base (dim) lines+particles
@@ -134,11 +145,12 @@ All rendered via `IMG(src)` helper → `<img style="width:2.6vw;height:2.6vw;obj
 ## Navigation
 - **Space / Click / →**: advance (or restart from step 6)
 - **←**: retreat one step (calls `UNDO[currentStep]()`)
+- **Swipe left / tap**: advance; **swipe right**: retreat
 - Hint text at bottom updates contextually
 
 ## Technical Notes
 - Fully self-contained single HTML file — no build tools, no npm
 - SVG `<animateMotion>` + `<mpath xlink:href>` for particles (xlink namespace required)
-- JS layout coordinates derived from `window.innerWidth/innerHeight` at load time to match CSS vw/vh
+- JS layout coordinates derived from `window.innerWidth/innerHeight` — recomputed on resize via `rebuildSVG()`
 - Dim effect on SVG line groups: set `g.style.opacity = '0.04'` — particles become invisible
 - Google Fonts require internet; system sans-serif fallback is acceptable offline
